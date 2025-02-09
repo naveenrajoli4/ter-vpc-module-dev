@@ -26,3 +26,7 @@ output "default_vpc_info" {
 output "peering_info" {
   value = aws_vpc_peering_connection.peering[0].id # we can provide this one also [count.index]
 }
+
+output "vpc_id" {
+  value = aws_vpc.main.id
+}
