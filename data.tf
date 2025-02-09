@@ -9,7 +9,7 @@ data "aws_vpc" "default" {
 data "aws_route_table" "main" {
   vpc_id = local.default_vpc_id
   filter {
-    name = "association.main"
+    name   = "association.main"
     values = ["true"]
   }
 }

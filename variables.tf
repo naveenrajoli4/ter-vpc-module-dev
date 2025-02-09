@@ -26,65 +26,65 @@ variable "vpc_tags" {
 }
 
 variable "igw_tags" {
-    default = {}
+  default = {}
 }
 
 variable "public_subnet_cidr" {
-    type = list 
-    validation {
-        condition = length(var.public_subnet_cidr) == 2
-        error_message = "You should provide 2 valid pulic subnet CIDR"
-    }
+  type = list(any)
+  validation {
+    condition     = length(var.public_subnet_cidr) == 2
+    error_message = "You should provide 2 valid pulic subnet CIDR"
+  }
 }
 
 variable "public_subet_tags" {
-    default = {}
+  default = {}
 }
 
 variable "private_subnet_cidr" {
-    type = list
-    validation {
-        condition = length(var.private_subnet_cidr) == 2
-        error_message = "You should provide 2 valid private subnet CIDR"
-    }
+  type = list(any)
+  validation {
+    condition     = length(var.private_subnet_cidr) == 2
+    error_message = "You should provide 2 valid private subnet CIDR"
+  }
 }
 
 variable "private_subnet_tags" {
-    default = {}
+  default = {}
 }
 
 variable "database_subnet_cidr" {
-    type = list
-    validation {
-        condition = length(var.database_subnet_cidr) == 2
-        error_message  = "You should provide 2 valid database subnet CIDR"
-    }
+  type = list(any)
+  validation {
+    condition     = length(var.database_subnet_cidr) == 2
+    error_message = "You should provide 2 valid database subnet CIDR"
+  }
 }
 
 variable "database_subnet_tags" {
-    default = {}
+  default = {}
 }
 
 variable "nat_gateway_tags" {
-    default = {}
+  default = {}
 }
 
 variable "public_route_table_tags" {
-    default = {}
+  default = {}
 }
 
 variable "private_route_table_tags" {
-    default = {}
+  default = {}
 }
 
 variable "database_route_table_tags" {
-    default = {}
+  default = {}
 }
 
 variable "is_peering_required" {
-    default = false
+  default = false
 }
 
 variable "peering_tags" {
-    default = {}
+  default = {}
 }
