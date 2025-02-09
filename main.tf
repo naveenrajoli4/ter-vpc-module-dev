@@ -94,3 +94,81 @@ resource "aws_nat_gateway" "nat"{
   # on the Internet Gateway for the VPC.
   depends_on = [aws_internet_gateway.igw]
 }
+
+resource "aws_route_table" "public" {
+    vpc_id = aws_vpc.main.id
+    
+    tags = merge (
+        var.commn_tags,
+        var.public_route_table_tags,
+        {
+            Name = "${local.resource_name}-public"
+        }
+    )
+
+}
+
+resource "aws_route_table" "private" {
+    vpc_id = aws_vpc.main.id
+    
+    tags = merge (
+        var.commn_tags,
+        var.private_route_table_tags,
+        {
+            Name = "${local.resource_name}-private"
+        }
+    )
+
+}
+
+resource "aws_route_table" "database" {
+    vpc_id = aws_vpc.main.id
+    
+    tags = merge (
+        var.commn_tags,
+        var.database_route_table_tags,
+        {
+            Name = "${local.resource_name}-database"
+        }
+    )
+
+}
+
+resource "aws_route" "rpub" {
+    route_table_id = aws_route_table.public.id
+    destination_cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw.id
+}
+
+resource "aws_route" "rpri" {
+    route_table_id = aws_route_table.private.id
+    destination_cidr_block = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.nat.id
+}
+
+resource "aws_route" "rdata" {
+    route_table_id = aws_route_table.database.id
+    destination_cidr_block = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.nat.id
+}
+
+resource "aws_route_table_association" "associationpub" {
+    count = length(var.public_subnet_cidr)
+    route_table_id = aws_route_table.public.id
+    subnet_id = aws_subnet.public[count.index].id
+
+}
+
+resource "aws_route_table_association" "associationprivate" {
+    count = length(var.private_subnet_cidr)
+    route_table_id = aws_route_table.private.id
+    subnet_id = aws_subnet.private[count.index].id
+
+}
+
+resource "aws_route_table_association" "associationdata" {
+    count = length(var.database_subnet_cidr)
+    route_table_id = aws_route_table.database.id
+    subnet_id = aws_subnet.database[count.index].id
+
+}
